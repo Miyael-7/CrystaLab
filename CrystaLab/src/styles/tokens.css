@@ -1,0 +1,68 @@
+/*
+ * Tokens de diseño de CrystaLab.
+ * Los colores físicos son FIJOS en toda la app: el mismo elemento
+ * (normal, dirección de deslizamiento, etc.) siempre tiene el mismo color
+ * en el modelo 3D, en la leyenda y en el panel de resultados.
+ */
+:root {
+  /* Superficies */
+  --bg: #0b0f14;
+  --bg-elev: #111820;
+  --bg-panel: #151d27;
+  --bg-viewport: #0e141b;
+  --border: #233040;
+  --border-strong: #31435a;
+
+  /* Texto */
+  --text: #e6edf3;
+  --text-muted: #9aa8b8;
+  --text-faint: #6b7a8c;
+
+  /* Acento de marca */
+  --accent: #5eead4;
+  --accent-strong: #2dd4bf;
+  --accent-soft: rgba(94, 234, 212, 0.12);
+
+  /* Código de color físico */
+  --c-load: #f87171;      /* fuerza / eje de carga */
+  --c-normal: #60a5fa;    /* normal al plano de deslizamiento */
+  --c-slip: #4ade80;      /* dirección de deslizamiento */
+  --c-plane: #fbbf24;     /* plano de deslizamiento */
+  --c-phi: #93c5fd;       /* arco φ */
+  --c-lambda: #86efac;    /* arco λ */
+  --c-axis-x: #f87171;
+  --c-axis-y: #4ade80;
+  --c-axis-z: #60a5fa;
+
+  /* Estados de activación */
+  --state-idle: #6b7a8c;
+  --state-near: #fbbf24;
+  --state-active: #f87171;
+
+  /* Tipografía */
+  --font-sans: 'Inter', 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: clamp(2rem, 4.5vw, 3.25rem);
+
+  /* Espaciado y forma */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+
+  --header-h: 60px;
+  --content-max: 1200px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

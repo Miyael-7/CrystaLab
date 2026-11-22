@@ -1,0 +1,350 @@
+.container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-12) var(--sp-4);
+}
+
+.eyebrow {
+  margin-bottom: var(--sp-2);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.h2 {
+  font-size: var(--fs-xl);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--sp-6);
+}
+
+/* ---------- Portada ---------- */
+.hero {
+  position: relative;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vw, 5rem) var(--sp-4) var(--sp-8);
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 30% 40%, #000 0%, transparent 70%);
+  opacity: 0.45;
+}
+
+.title {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.titleAccent {
+  display: block;
+  color: var(--text-muted);
+}
+
+.lead {
+  max-width: 58ch;
+  color: var(--text-muted);
+  font-size: 1.075rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+
+.primary,
+.secondary {
+  padding: var(--sp-3) var(--sp-6);
+  border-radius: var(--radius);
+  font-weight: 600;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+
+.primary {
+  background: var(--accent);
+  color: #062a26;
+}
+
+.primary:hover {
+  background: var(--accent-strong);
+  text-decoration: none;
+}
+
+.secondary {
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+}
+
+.secondary:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.heroVisual {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heroGlow {
+  position: absolute;
+  inset: 10% 10% 20%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.14), rgba(94, 234, 212, 0.06) 45%, transparent 70%);
+  filter: blur(10px);
+}
+
+.heroCaption {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* ---------- Banda ---------- */
+.band {
+  background: var(--bg-elev);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.pipeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--sp-3);
+  counter-reset: step;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  min-height: 130px;
+}
+
+.step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: calc(-1 * var(--sp-3));
+  top: 50%;
+  transform: translate(50%, -50%);
+  color: var(--text-faint);
+  font-size: var(--fs-sm);
+  z-index: 1;
+}
+
+.stepKey {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--accent);
+}
+
+.stepTitle {
+  font-size: var(--fs-sm);
+}
+
+.stepText {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* ---------- Introducciones ---------- */
+.intro {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--sp-8);
+  align-items: center;
+  padding: var(--sp-6) 0;
+}
+
+.intro + .intro {
+  margin-top: var(--sp-8);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-12);
+}
+
+.introReverse .introVisual {
+  order: -1;
+}
+
+.introText p {
+  color: var(--text-muted);
+}
+
+.introText strong {
+  color: var(--text);
+}
+
+.introVisual {
+  display: flex;
+  justify-content: center;
+}
+
+.textLink {
+  font-weight: 600;
+}
+
+/* ---------- Por qué importa ---------- */
+.why {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+}
+
+.whyCard {
+  padding: var(--sp-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-panel);
+}
+
+.whyCard h3 {
+  font-size: var(--fs-md);
+}
+
+.whyCard p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Accesos ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-4);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+  color: var(--text);
+  overflow: hidden;
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--card-color);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  text-decoration: none;
+}
+
+.cardTag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--card-color);
+}
+
+.cardTitle {
+  font-size: var(--fs-lg);
+  margin: var(--sp-2) 0;
+}
+
+.cardText {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  flex: 1;
+}
+
+.cardCta {
+  font-size: var(--fs-sm);
+  color: var(--card-color);
+  font-weight: 600;
+}
+
+.legendBox {
+  margin-top: var(--sp-8);
+  padding: var(--sp-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+}
+
+.legendTitle {
+  font-size: var(--fs-md);
+  margin-bottom: var(--sp-1);
+}
+
+.legendNote {
+  color: var(--text-faint);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Adaptable ---------- */
+@media (max-width: 960px) {
+  .hero,
+  .intro {
+    grid-template-columns: 1fr;
+  }
+
+  .introReverse .introVisual {
+    order: 0;
+  }
+
+  .pipeline {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .step:nth-child(3)::after {
+    display: none;
+  }
+
+  .why {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .pipeline {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .step::after {
+    display: none;
+  }
+
+  .step {
+    min-height: 0;
+  }
+}

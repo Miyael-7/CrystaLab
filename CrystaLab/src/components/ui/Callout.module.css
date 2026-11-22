@@ -1,0 +1,59 @@
+.callout {
+  --cl: var(--accent);
+  margin: var(--sp-6) 0;
+  padding: var(--sp-4) var(--sp-6);
+  border: 1px solid color-mix(in srgb, var(--cl) 35%, transparent);
+  border-left: 3px solid var(--cl);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--cl) 7%, var(--bg-elev));
+}
+
+.callout[data-kind='curiosity'] {
+  --cl: #c084fc;
+}
+
+.callout[data-kind='warning'] {
+  --cl: var(--c-plane);
+}
+
+.callout[data-kind='example'] {
+  --cl: var(--c-normal);
+}
+
+.callout[data-kind='key'] {
+  --cl: var(--c-slip);
+}
+
+.title {
+  margin: 0 0 var(--sp-2);
+  color: var(--cl);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.body > :last-child {
+  margin-bottom: 0;
+}
+
+.source {
+  display: inline-block;
+  padding: 1px var(--sp-2);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.source[data-source='clase'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.source[data-source='complemento'] {
+  background: rgba(192, 132, 252, 0.13);
+  color: #c084fc;
+}

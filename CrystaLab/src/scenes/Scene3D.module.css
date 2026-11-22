@@ -1,0 +1,38 @@
+.label {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: rgba(11, 15, 20, 0.72);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  white-space: nowrap;
+  user-select: none;
+  line-height: 1.4;
+}
+
+.label[data-size='sm'] {
+  font-size: 11px;
+}
+
+.label[data-size='md'] {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-8);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.fallback strong {
+  color: var(--text);
+}
