@@ -4,14 +4,16 @@ import { Viewport } from '../../components/sim/Viewport';
 import sim from '../../components/sim/Sim.module.css';
 import { Callout } from '../../components/ui/Callout';
 import { Idx } from '../../components/ui/Idx';
-import { formatNumber, type StressUnit, type Structure, type Vec3 } from '../../core';
+import { formatNumber, type Indices, type StressUnit, type Structure, type Vec3 } from '../../core';
 import { useRouter } from '../../lib/router/HashRouter';
 import { ROUTES } from '../../routes';
 import { LazyScene3D as Scene3D } from '../../scenes/LazyScene3D';
 import { buildSystemsScene } from '../../scenes/systemsScene';
+import { rowsInPlane } from '../../sim/planeAnalysis';
 import { loadSlipSystem } from '../../sim/schmidStore';
 import { computeSystems, otherStructure, systemKey, type SystemRow } from '../../sim/systemsModel';
 import { PALETTE } from '../../styles/palette';
+import { PlaneAnalysis } from './PlaneAnalysis';
 import styles from './SlipSystemsPage.module.css';
 
 const LOADS: [number, number, number][] = [
@@ -39,6 +41,24 @@ export function SlipSystemsPage() {
   // Al cambiar la estructura o la carga se selecciona el sistema más favorable.
   useEffect(() => setSelected(0), [structure, load]);
   const sel: SystemRow | undefined = res.rows[selected];
+
+  // Vista de la tabla: análisis de un plano (primera opción) o ranking de los 12 sistemas.
+  const [view, setView] = useState<'plane' | 'ranking'>('plane');
+  const [planeSel, setPlaneSel] = useState<Indices>([1, 0, 1]);
+  // El plano analizado sigue al sistema seleccionado (desde la tabla, el ranking o un plano).
+  useEffect(() => {
+    if (sel) setPlaneSel(sel.plane);
+  }, [sel]);
+  const choosePlane = (plane: Indices) => {
+    setPlaneSel(plane);
+    const first = rowsInPlane(res.rows, plane)[0];
+    if (first) setSelected(first.index);
+  };
+  const loadLabel = load.every(Number.isInteger) ? (
+    <Idx v={load as unknown as [number, number, number]} />
+  ) : (
+    <span className="mono">[{load.map((x) => f(x, 3)).join(' ')}]</span>
+  );
 
   const scene = useMemo(
     () => (res.rows.length ? buildSystemsScene({ structure, load, plane: sel?.plane, direction: sel?.direction }) : null),
@@ -153,6 +173,36 @@ export function SlipSystemsPage() {
 
       {res.rows.length > 0 && (
         <section className={styles.tableCard} aria-labelledby="tabla-sistemas">
+          <div className={styles.viewTabs}>
+            <Segmented
+              ariaLabel="Forma de consultar los resultados"
+              value={view}
+              onChange={setView}
+              options={[
+                { value: 'plane', label: 'Analizar un plano' },
+                { value: 'ranking', label: 'Ranking de los 12 sistemas' },
+              ]}
+            />
+          </div>
+          {view === 'plane' ? (
+            <>
+              <header className={styles.tableHead}>
+                <h2 id="tabla-sistemas">Direcciones de deslizamiento de un plano para la carga {loadLabel}</h2>
+                <p>Elige un plano de deslizamiento para ver sus direcciones y sus factores de Schmid. Haz clic en una fila para verla en 3D.</p>
+              </header>
+              <PlaneAnalysis
+                structure={structure}
+                rows={res.rows}
+                unit={unit}
+                plane={planeSel}
+                onPlane={choosePlane}
+                selected={selected}
+                onSelect={setSelected}
+                onSimulate={openInSimulator}
+              />
+            </>
+          ) : (
+          <>
           <header className={styles.tableHead}>
             <h2 id="tabla-sistemas">
               Los 12 sistemas {structure} {res.family} para la carga{' '}
@@ -208,6 +258,8 @@ export function SlipSystemsPage() {
             </table>
           </div>
           <p className={sim.hint}>La barra de |m| se escala respecto al máximo teórico 0.5. Los sistemas con m = 0 no pueden deslizar con esta carga, sin importar σ.</p>
+          </>
+          )}
         </section>
       )}
 

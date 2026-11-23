@@ -262,3 +262,107 @@
     padding: var(--sp-4);
   }
 }
+
+/* ---------- Vistas de la tabla: plano / ranking ---------- */
+.viewTabs {
+  max-width: 460px;
+  margin-bottom: var(--sp-4);
+}
+
+.planeView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.planePicker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+.planeChoices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.pickerLabel {
+  font-size: var(--fs-sm);
+  font-weight: 550;
+  color: var(--text);
+}
+
+.planeButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.planeButton {
+  min-width: 76px;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.planeButton:hover {
+  border-color: var(--c-plane);
+  color: var(--text);
+}
+
+.planeButton[data-active='true'] {
+  border-color: var(--c-plane);
+  background: rgba(251, 191, 36, 0.12);
+  color: var(--c-plane);
+}
+
+.planeTyped {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.planeSummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+}
+
+.planeSummary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sumLabel {
+  color: var(--text-faint);
+  font-size: var(--fs-xs);
+}
+
+.sumValue {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .planePicker {
+    grid-template-columns: 1fr;
+  }
+
+  .planeSummary {
+    grid-template-columns: 1fr 1fr;
+  }
+}

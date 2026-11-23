@@ -49,6 +49,7 @@
 }
 
 .stickyView {
+  min-width: 0;
   position: sticky;
   top: calc(var(--header-h) + var(--sp-3));
 }
@@ -67,8 +68,57 @@
   touch-action: none;
 }
 
+.viewport {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zona del lienzo 3D (ocupa todo el espacio libre de la ventana). */
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
 .viewport canvas {
   display: block;
+}
+
+/* Franja inferior dentro de la ventana (por ejemplo, los ejemplos del simulador). */
+.footer {
+  flex: none;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-top: 1px solid var(--border);
+  background: rgba(17, 24, 32, 0.92);
+}
+
+.footerLabel {
+  flex: none;
+  color: var(--text-faint);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footerScroll {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.footerScroll > div {
+  flex-wrap: nowrap;
+}
+
+.footerScroll button {
+  flex: none;
+  white-space: nowrap;
 }
 
 .overlay {
@@ -667,7 +717,8 @@
 
 @media (max-width: 860px) {
   .layout {
-    grid-template-columns: 1fr;
+    /* minmax(0, …): la columna no puede crecer más que la pantalla por contenido ancho. */
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .stickyView {
@@ -681,6 +732,12 @@
 
   .viewHint {
     display: none;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--sp-1);
   }
 
   .theory {

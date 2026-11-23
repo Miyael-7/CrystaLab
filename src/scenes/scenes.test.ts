@@ -10,6 +10,7 @@ import {
   specimenRotation,
   sub,
   type Indices,
+  type Mat3,
   type Vec3,
 } from '../core';
 import { buildMillerScene } from './millerScene';
@@ -150,6 +151,32 @@ describe('campo de visión adaptable', () => {
     // ancho visible con aspecto 0.5 = ancho visible con aspecto 1 y 38°
     expect(Math.tan((v * Math.PI) / 360) * 0.5).toBeCloseTo(Math.tan((38 * Math.PI) / 360), 9);
     expect(effectiveFov(38, 0.05)).toBe(80);
+  });
+});
+
+describe('etiquetas de n̂ y d̂ coherentes con el sentido dibujado', () => {
+  const transpose = (R: Mat3): Mat3 => [[R[0][0], R[1][0], R[2][0]], [R[0][1], R[1][1], R[2][1]], [R[0][2], R[1][2], R[2][2]]];
+  it.each<[string, Indices, Indices, Vec3]>([
+    ['BCC [121]', [1, 1, 0], [-1, 1, 1], [1, 2, 1]],
+    ['BCC [123]', [1, 0, 1], [1, -1, -1], [1, 2, 3]],
+    ['coplanar', [1, 0, 1], [-1, 0, 1], [1, 0, 0]],
+    ['normal hacia abajo', [-1, -1, -1], [1, -1, 0], [1, 2, 3]],
+  ])('%s: cada flecha apunta en el sentido de los índices de su etiqueta', (_n, plane, dir, load) => {
+    const R = specimenRotation(load, plane, dir);
+    const sf = schmidFactor(plane, dir, load);
+    const sc = buildSchmidScene({ normal: applyMat(R, normalize(plane)), slip: applyMat(R, normalize(dir)), load: 'tension', phiDeg: sf.phiAcuteDeg, lambdaDeg: sf.lambdaAcuteDeg, state: null, rotation: R, planeIdx: plane, dirIdx: dir });
+    const back = (id: string) => applyMat(transpose(R), get<ArrowPrim>(sc.prims, id).to); // de la probeta al cristal
+    expect(dot(back('slip'), get<LabelPrim>(sc.prims, 'slip-l').idx!.v)).toBeGreaterThan(0);
+    expect(dot(back('normal'), get<LabelPrim>(sc.prims, 'normal-l').idx!.v)).toBeGreaterThan(0);
+  });
+
+  it('BCC [123]: la flecha verde se etiqueta [1̄11] (sentido hacia arriba de [11̄1̄])', () => {
+    const plane: Indices = [1, 0, 1];
+    const dir: Indices = [1, -1, -1];
+    const R = specimenRotation([1, 2, 3], plane, dir);
+    const sf = schmidFactor(plane, dir, [1, 2, 3]);
+    const sc = buildSchmidScene({ normal: applyMat(R, normalize(plane)), slip: applyMat(R, normalize(dir)), load: 'tension', phiDeg: sf.phiAcuteDeg, lambdaDeg: sf.lambdaAcuteDeg, state: null, rotation: R, planeIdx: plane, dirIdx: dir });
+    expect(get<LabelPrim>(sc.prims, 'slip-l').idx!.v).toEqual([-1, 1, 1]);
   });
 });
 

@@ -5,6 +5,7 @@ import {
   applyMat,
   arcPoints,
   cylinderSection,
+  dot,
   formatNumber,
   normalize,
   scale,
@@ -46,6 +47,13 @@ export function buildSchmidScene(s: SchmidSceneInput): SchmidScene {
   const { radius: R, halfHeight: H } = SPECIMEN;
   const n = acuteTo(normalize(s.normal), Z);
   const d = acuteTo(normalize(s.slip), Z);
+  // Si una flecha se dibuja en sentido opuesto (para mostrar ángulos agudos),
+  // su etiqueta debe mostrar los índices de ese sentido: [ūv̄w̄] en lugar de [uvw].
+  const flipN = dot(normalize(s.normal), Z) < 0;
+  const flipD = dot(normalize(s.slip), Z) < 0;
+  const neg = (v: Indices): Indices => [-v[0] || 0, -v[1] || 0, -v[2] || 0];
+  const planeLabel = s.planeIdx ? (flipN ? neg(s.planeIdx) : s.planeIdx) : undefined;
+  const dirLabel = s.dirIdx ? (flipD ? neg(s.dirIdx) : s.dirIdx) : undefined;
   const prims: Prim[] = [];
   const active = s.state === 'active';
   const tension = s.load === 'tension';
@@ -86,11 +94,11 @@ export function buildSchmidScene(s: SchmidSceneInput): SchmidScene {
   prims.push({ kind: 'arrow', id: 'slip', from: [0, 0, 0], to: scale(d, L), color: PALETTE.slip, radius: 0.018 });
   prims.push({
     kind: 'label', id: 'normal-l', position: scale(n, L + 0.28), color: PALETTE.normal,
-    ...(s.planeIdx ? { idx: { v: s.planeIdx, kind: 'direction' as const }, suffix: ' n̂' } : { text: 'n̂' }), size: 'sm',
+    ...(planeLabel ? { idx: { v: planeLabel, kind: 'direction' as const }, suffix: ' n̂' } : { text: 'n̂' }), size: 'sm',
   });
   prims.push({
     kind: 'label', id: 'slip-l', position: scale(d, L + 0.28), color: PALETTE.slip,
-    ...(s.dirIdx ? { idx: { v: s.dirIdx, kind: 'direction' as const }, suffix: ' d̂' } : { text: 'd̂' }), size: 'sm',
+    ...(dirLabel ? { idx: { v: dirLabel, kind: 'direction' as const }, suffix: ' d̂' } : { text: 'd̂' }), size: 'sm',
   });
 
   // Arcos de φ y λ (ángulos agudos).

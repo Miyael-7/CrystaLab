@@ -1,7 +1,7 @@
 {
   "name": "crystalab",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Laboratorio virtual de Índices de Miller y Ley de Schmid — Ingeniería de Materiales, Facultad de Ingeniería, UNAM",
   "type": "module",
   "scripts": {

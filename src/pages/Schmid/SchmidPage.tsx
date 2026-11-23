@@ -5,6 +5,7 @@ import { Viewport } from '../../components/sim/Viewport';
 import sim from '../../components/sim/Sim.module.css';
 import { ColorLegend } from '../../components/ui/ColorLegend';
 import { Idx } from '../../components/ui/Idx';
+import { IndexText } from '../../components/ui/IndexText';
 import { Tex } from '../../components/ui/Tex';
 import { formatNumber, isDirectionInPlane, paTo, slipOffset, type Indices } from '../../core';
 import { useStore } from '../../lib/store';
@@ -55,9 +56,37 @@ export function SchmidPage() {
 
   const offset = scene ? slipOffset(scene.slipUp, model.sigmaPa ?? 1, 1, 0.34) : ([0, 0, 0] as const);
 
+  const examples = (
+    <>
+      <span className={sim.footerLabel}>Ejemplos</span>
+      <div className={sim.footerScroll}>
+        <Chips
+          label="Ejemplos"
+          items={SCHMID_PRESETS.filter((p) => (p.values.mode ?? 'indices') === inp.mode).map((p) => ({
+            value: p,
+            title: p.title,
+            label: (
+              <>
+                {p.label}
+                {p.values.plane && p.values.dir && (
+                  <>
+                    {' · '}
+                    <Idx v={p.values.plane} kind="plane" />
+                    <Idx v={p.values.dir} />
+                  </>
+                )}
+              </>
+            ),
+          }))}
+          onPick={(p) => set(p.values)}
+        />
+      </div>
+    </>
+  );
+
   const overlay = !scene ? (
     <div className={sim.stack}>
-      {model.errors.length > 0 && <p className={sim.error}>{model.errors[0]}</p>}
+      {model.errors.length > 0 && <p className={sim.error}><IndexText text={model.errors[0]!} /></p>}
       {model.errors.length === 0 && !model.geometricallyPossible && (
         <p className={sim.warning}>Con φ + λ &lt; 90° no existe ninguna orientación real del cristal: no se puede dibujar. Revisa los ángulos.</p>
       )}
@@ -88,7 +117,7 @@ export function SchmidPage() {
 
       <div className={sim.layout}>
         <div className={sim.stickyView}>
-          <Viewport onResetView={() => setViewKey((k) => k + 1)} legend={<ColorLegend compact />} overlay={overlay}>
+          <Viewport onResetView={() => setViewKey((k) => k + 1)} legend={<ColorLegend compact />} overlay={overlay} footer={examples}>
             {scene && (
               <Scene3D
                 scene={scene}
@@ -101,28 +130,6 @@ export function SchmidPage() {
         </div>
 
         <aside className={sim.side}>
-          <PanelCard title="Ejemplos">
-            <Chips
-              label="Ejemplos"
-              items={SCHMID_PRESETS.filter((p) => (p.values.mode ?? 'indices') === inp.mode).map((p) => ({
-                value: p,
-                title: p.title,
-                label: (
-                  <>
-                    {p.label}
-                    {p.values.plane && p.values.dir && (
-                      <>
-                        {' · '}
-                        <Idx v={p.values.plane} kind="plane" />
-                        <Idx v={p.values.dir} />
-                      </>
-                    )}
-                  </>
-                ),
-              }))}
-              onPick={(p) => set(p.values)}
-            />
-          </PanelCard>
 
           {inp.mode === 'indices' ? (
             <PanelCard title="Sistema de deslizamiento">
@@ -201,7 +208,7 @@ export function SchmidPage() {
           </PanelCard>
 
           {model.errors.length > 0 && scene && (
-            <div className={sim.stack}>{model.errors.map((e) => <p key={e} className={sim.error}>{e}</p>)}</div>
+            <div className={sim.stack}>{model.errors.map((e) => <p key={e} className={sim.error}><IndexText text={e} /></p>)}</div>
           )}
 
           <ResultsCard inp={inp} model={model} />
